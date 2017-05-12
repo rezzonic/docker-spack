@@ -15,9 +15,13 @@ RUN apt-get -y install git python g++ gfortran environment-modules curl make
 RUN git clone https://github.com/llnl/spack.git 
 RUN echo 'module() { eval `/usr/bin/modulecmd sh $*`; }' >> /spack/share/spack/setup-env.sh
 
-RUN sh /spack/share/spack/setup-env.sh
+RUN source /spack/share/spack/setup-env.sh
 
 RUN echo 'module() { eval `/usr/bin/modulecmd $modules_shell $*`; }' >> /root/.bashrc
+
+RUN echo "  tcl:" >> /spack/etc/spack/defaults/modules.yaml
+RUN echo "    hash_length: 0" >> /spack/etc/spack/defaults/modules.yaml
+RUN echo "    naming_scheme: '${PACKAGE}/${VERSION}-${COMPILERNAME}-${COMPILERVER}'" >> /spack/etc/spack/defaults/modules.yaml
 
 ENV SPACK_ROOT=/spack
 
